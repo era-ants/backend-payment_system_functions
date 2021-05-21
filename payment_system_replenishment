@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sat May 22 00:13:32 2021
+
+@author: tsar
+"""
+
+from sqlalchemy import create_engine, update
+from payment_system_create_base import bills
+from sqlalchemy.orm import sessionmaker
+engine = create_engine('sqlite:///accounts.db', echo=True)
+Session = sessionmaker(bind = engine)
+session = Session()
+
+def replenishment(data):
+    session.query(bills).filter(bills.c.id == data[0]).\
+    update({"digits": bills.c.digits + data[1]})
+    session.commit()
+    
+    
+info = [1, 100]
+
+replenishment(info)
